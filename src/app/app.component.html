@@ -1,0 +1,19 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="movies" routerLink="/movies">
+      <ion-icon name="film"></ion-icon>
+      <ion-label>Movies</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="bookmarks" routerLink="/bookmarks">
+      <ion-icon name="bookmark"></ion-icon>
+      <ion-label>Bookmarks</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+
+<!-- Переключатель темы -->
+<div class="theme-toggle">
+  <ion-button fill="clear" (click)="toggleTheme()">
+    <ion-icon [name]="isDarkMode ? 'moon' : 'sunny'" slot="icon-only"></ion-icon>
+  </ion-button>
+</div>

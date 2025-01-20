@@ -1,0 +1,16 @@
+.no-bookmarks-text {
+  text-align: center;
+  margin-top: 50%;
+  color: var(--ion-color-medium);
+}
+
+ion-thumbnail img {
+  object-fit: cover;
+  height: 60px;
+  width: 40px;
+}
+
+ion-button {
+  --icon-size: 20px;
+  margin-left: auto;
+}

@@ -1,0 +1,13 @@
+:root {
+  /* Светлая тема */
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --ion-toolbar-background: #f8f8f8;
+}
+
+.dark-theme {
+  /* Тёмная тема */
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+  --ion-toolbar-background: #1c1c1c;
+}

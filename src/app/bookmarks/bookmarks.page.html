@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bookmarks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Поле для поиска -->
+  <ion-searchbar
+    placeholder="Search bookmarks..."
+    (ionInput)="filterBookmarks($event)"
+  ></ion-searchbar>
+
+  <!-- Список закладок -->
+  <ion-list *ngIf="filteredBookmarks.length > 0; else noBookmarks">
+    <ion-item
+      *ngFor="let bookmark of filteredBookmarks"
+      (click)="goToMovieDetail(bookmark.id)"
+      detail
+    >
+      <!-- Постер -->
+      <ion-thumbnail slot="start">
+        <img [src]="bookmark.poster" alt="{{ bookmark.title }} poster" />
+      </ion-thumbnail>
+
+      <!-- Информация -->
+      <ion-label>
+        <h2>{{ bookmark.title }} ({{ bookmark.year }})</h2>
+        <p>{{ bookmark.description }}</p>
+      </ion-label>
+
+      <!-- Кнопка Удалить -->
+      <ion-button
+        slot="end"
+        color="danger"
+        (click)="removeBookmark($event, bookmark.id)"
+      >
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Если закладок нет -->
+  <ng-template #noBookmarks>
+    <ion-text color="medium" class="no-bookmarks-text">
+      <h2>No bookmarks yet!</h2>
+      <p>Go back to Movies and add some to your bookmarks.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>

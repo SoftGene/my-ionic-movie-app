@@ -1,0 +1,55 @@
+ion-grid {
+  padding: 15px;
+}
+
+ion-col img {
+  width: 100%; /* Постер занимает всю ширину своей колонки */
+  height: auto; /* Сохраняет пропорции */
+  border-radius: 8px; /* Закругленные углы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Добавляем небольшую тень */
+}
+
+ion-col h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+ion-col p {
+  font-size: 1rem;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  ion-grid {
+    padding: 20px 40px; /* Более удобные отступы для больших экранов */
+  }
+}
+
+ion-back-button {
+  color: #3880ff; /* Измените цвет стрелки */
+  font-size: 1.2rem; /* Размер стрелки */
+}
+
+.movie-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  padding: 16px;
+}
+
+ion-thumbnail img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.movie-info {
+  max-width: 600px;
+  text-align: left;
+}
+
+.trailer {
+  margin-top: 20px;
+}

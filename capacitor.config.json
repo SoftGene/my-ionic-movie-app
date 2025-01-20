@@ -1,0 +1,19 @@
+{
+  "appId": "com.example.myapp",
+  "appName": "MyApp",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,            
+      "launchAutoHide": true,               
+      "backgroundColor": "#ffffff",         
+      "androidScaleType": "CENTER_CROP",   
+      "showSpinner": true,                  
+      "spinnerStyle": "large",             
+      "iosSpinnerStyle": "small",           
+      "spinnerColor": "#000000"             
+    }
+  }
+}
+

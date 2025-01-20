@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ movie?.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <!-- Колонка с постером -->
+      <ion-col size="4" size-md="3">
+        <img [src]="movie.poster" alt="{{ movie.title }} poster" />
+      </ion-col>
+
+      <!-- Колонка с информацией -->
+      <ion-col size="8" size-md="9">
+        <h2>{{ movie.title }}</h2>
+        <p><strong>Director:</strong> {{ movie.director }}</p>
+        <p><strong>Writers:</strong> {{ movie.writers }}</p>
+        <p><strong>Stars:</strong> {{ movie.stars }}</p>
+        <p><strong>Description:</strong> {{ movie.fullDescription }}</p>
+        <p><strong>Duration:</strong> {{ movie.duration }}</p>
+        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+      </ion-col>
+    </ion-row>
+    <!-- Трейлер -->
+    <ion-row>
+      <ion-col>
+        <h3>Trailer</h3>
+        <iframe
+        [src]="getSafeUrl(movie.trailerUrl)"
+        width="100%"
+        height="315"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        allowfullscreen
+        ></iframe>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+

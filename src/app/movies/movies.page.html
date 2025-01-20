@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Movies</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openSortPopover($event)">
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Поле для поиска -->
+  <ion-searchbar
+    placeholder="Search movies..."
+    (ionInput)="filterMovies($event)"
+  ></ion-searchbar>
+
+  <ion-list>
+    <button
+      *ngFor="let movie of filteredMovies"
+      (click)="goToMovieDetail(movie.id)"
+      class="movie-item"
+    >
+      <ion-item>
+        <!-- Постер -->
+        <ion-thumbnail slot="start">
+          <img [src]="movie.poster" alt="{{ movie.title }} poster" />
+        </ion-thumbnail>
+
+        <!-- Информация -->
+        <ion-label>
+          <h2>{{ movie.title }} ({{ movie.year }})</h2>
+          <p>{{ movie.description }}</p>
+        </ion-label>
+
+        <!-- Звездочка -->
+        <ion-button
+          slot="end"
+          fill="clear"
+          (click)="toggleBookmark($event, movie)"
+        >
+          <ion-icon
+            [name]="isBookmarked(movie) ? 'star' : 'star-outline'"
+          ></ion-icon>
+        </ion-button>
+      </ion-item>
+    </button>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,41 @@
+.theme-toggle {
+  position: fixed;
+  bottom: 1px;
+  left: 16px;
+  z-index: 100; /* Убедитесь, что переключатель находится поверх вкладок */
+}
+
+ion-button {
+  --color: var(--ion-text-color); /* Цвет зависит от темы */
+  --background: transparent; /* Убираем фон кнопки */
+  --icon-size: 24px; /* Размер иконки */
+  height: 48px; /* Фиксируем высоту кнопки */
+  width: 48px; /* Фиксируем ширину кнопки */
+  --border-radius: 50%; /* Круглая кнопка */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+  /* Плавная анимация для масштаба, цвета фона и текста */
+}
+
+ion-button:hover {
+  transform: scale(1.1); /* Лёгкое увеличение кнопки при наведении */
+}
+
+ion-button:active {
+  transform: scale(0.9); /* Лёгкое уменьшение кнопки при клике */
+}
+
+ion-icon {
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+ion-button:hover ion-icon {
+  transform: rotate(20deg); /* Лёгкий поворот иконки при наведении */
+}
+
+ion-button:focus {
+  outline: none; /* Убираем стандартный контур фокуса */
+  box-shadow: none; /* Убираем любое свечение */
+}
