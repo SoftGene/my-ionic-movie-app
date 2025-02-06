@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: 'movies', loadComponent: () => import('./movies/movies.page').then(m => m.MoviesPage) },
   { path: 'bookmarks', loadComponent: () => import('./bookmarks/bookmarks.page').then(m => m.BookmarksPage) },
   { path: 'movie-detail/:id', loadComponent: () => import('./movie-detail/movie-detail.page').then(m => m.MovieDetailPage) },
+  { path: 'premiere', loadComponent: () => import('./premiere/premiere.component').then(m => m.PremiereComponent) },
 ];
 
 

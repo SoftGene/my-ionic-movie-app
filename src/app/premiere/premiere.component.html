@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Premieres</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Поле для поиска -->
+  <ion-searchbar
+    placeholder="Search premieres..."
+    (ionInput)="filterPremieres($event)"
+  ></ion-searchbar>
+
+  <ion-item
+  *ngFor="let premiere of filteredPremieres"
+  (click)="goToMovieDetail(premiere.id)"
+>
+  <ion-thumbnail slot="start">
+    <img
+      [src]="'https://image.tmdb.org/t/p/w200' + premiere.poster_path"
+      alt="{{ premiere.title }}"
+    />
+  </ion-thumbnail>
+  <ion-label>
+    <h2>{{ premiere.title }}</h2>
+    <p>Release Date: {{ premiere.release_date }}</p>
+  </ion-label>
+  <ion-button slot="end" fill="clear" (click)="toggleBookmark($event, premiere)">
+    <ion-icon [name]="isBookmarked(premiere) ? 'star' : 'star-outline'"></ion-icon>
+  </ion-button>
+</ion-item>
+</ion-content>

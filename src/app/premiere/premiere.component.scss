@@ -1,0 +1,58 @@
+ion-thumbnail {
+  width: 100px; /* Ширина превью */
+  height: 150px; /* Высота превью */
+  overflow: hidden; /* Обрезка изображения, если оно больше */
+  border-radius: 8px; /* Закругленные углы для эстетики */
+}
+
+ion-thumbnail img {
+  width: 100%; /* Масштабирование по ширине */
+  height: 100%; /* Масштабирование по высоте */
+  object-fit: cover; /* Изображение обрезается, чтобы заполнить весь контейнер */
+  border-radius: 8px; /* Закругленные углы самого изображения */
+}
+
+ion-item {
+  margin-bottom: 10px;
+}
+
+ion-label h2 {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+ion-label p {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+ion-header {
+  --background: #3880ff;
+  --color: #fff;
+}
+
+ion-button {
+  --color: #fff;
+}
+
+ion-popover {
+  --background: #fff; /* Убедитесь, что фон белый */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+ion-button[slot="end"] {
+  --icon-size: 24px; /* Размер иконки */
+  --color: #ffd700; /* Золотой цвет звездочки */
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+.movie-item {
+  all: unset; /* Убираем все стили кнопки */
+  display: block; /* Отображаем как блок */
+  width: 100%; /* Заполняем ширину */
+}

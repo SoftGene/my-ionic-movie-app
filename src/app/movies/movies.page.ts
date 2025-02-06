@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { BookmarkService } from '../services/bookmark.service';
 import { SortPopoverComponent } from '../components/sort-popover.component'; // Импорт компонента для сортировки
 import { PopoverController } from '@ionic/angular';
+import { Movie } from '../models/movie.model'; // Подключаем интерфейс
 
 
 @Component({
@@ -231,7 +232,7 @@ export class MoviesPage {
   ];
 
   filteredMovies = [...this.movies]; // Массив для отображения отфильтрованных фильмов
-  bookmarks: any[] = [];
+  bookmarks: Movie[] = [];
   searchQuery: string = ''; // Строка для ввода поиска
 
   constructor(private storage: Storage, private router: Router, private bookmarkService: BookmarkService, private popoverController: PopoverController) {}
@@ -247,29 +248,37 @@ export class MoviesPage {
   }
 
   async loadBookmarks() {
-    const storedBookmarks = await this.storage.get('bookmarks');
+    const storedBookmarks: Movie[] = await this.storage.get('bookmarks');
     this.bookmarks = storedBookmarks ? storedBookmarks : [];
   }
-
+  
   async saveBookmarks() {
     await this.storage.set('bookmarks', this.bookmarks);
     this.bookmarkService.notifyChange(); // Уведомляем о изменении закладок
   }
-
-  isBookmarked(movie: any): boolean {
+  
+  // Проверяем, добавлен ли фильм в закладки
+  isBookmarked(movie: Movie): boolean {
     return this.bookmarks.some((b) => b.id === movie.id);
   }
-
-  async toggleBookmark(event: Event, movie: any) {
+  
+  // Добавление/удаление фильма из закладок
+  async toggleBookmark(event: Event, movie: Movie) {
     event.stopPropagation();
     const index = this.bookmarks.findIndex((b) => b.id === movie.id);
-
+  
     if (index === -1) {
-      this.bookmarks.push(movie);
+      const formattedMovie: Movie = {
+        ...movie,
+        poster: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : movie.poster || '',
+      };
+      this.bookmarks.push(formattedMovie);
     } else {
       this.bookmarks.splice(index, 1);
     }
-
+  
     await this.saveBookmarks();
   }
 

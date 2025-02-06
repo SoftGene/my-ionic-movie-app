@@ -5,11 +5,11 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ movie?.title }}</ion-title>
+    <ion-title>{{ movie?.title || 'Loading...' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="movie; else loading">
   <ion-grid>
     <ion-row>
       <!-- Колонка с постером -->
@@ -20,12 +20,12 @@
       <!-- Колонка с информацией -->
       <ion-col size="8" size-md="9">
         <h2>{{ movie.title }}</h2>
-        <p><strong>Director:</strong> {{ movie.director }}</p>
-        <p><strong>Writers:</strong> {{ movie.writers }}</p>
-        <p><strong>Stars:</strong> {{ movie.stars }}</p>
-        <p><strong>Description:</strong> {{ movie.fullDescription }}</p>
-        <p><strong>Duration:</strong> {{ movie.duration }}</p>
-        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+        <p><strong>Director:</strong> {{ movie.director || 'Unknown' }}</p>
+        <p><strong>Writers:</strong> {{ movie.writers || 'Unknown' }}</p>
+        <p><strong>Stars:</strong> {{ movie.stars || 'Unknown' }}</p>
+        <p><strong>Description:</strong> {{ movie.fullDescription || movie.description || 'No description available'}}</p>
+        <p><strong>Duration:</strong> {{ movie.duration || 'Unknown' }}</p>
+        <p><strong>Rating:</strong> {{ movie.rating || 'Unknown' }}</p>
       </ion-col>
     </ion-row>
     <!-- Трейлер -->
@@ -44,5 +44,11 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ng-template #loading>
+  <ion-text color="medium">
+    <h2>Loading movie details...</h2>
+  </ion-text>
+</ng-template>
 
 

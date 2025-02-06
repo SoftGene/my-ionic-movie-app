@@ -27,6 +27,7 @@ export class BookmarksPage implements OnDestroy {
     private router: Router // Внедрение Router
   ) {}
 
+  
   async ngOnInit() {
     await this.storage.create();
     this.loadBookmarks();
@@ -37,11 +38,13 @@ export class BookmarksPage implements OnDestroy {
     });
   }
 
+      
   async loadBookmarks() {
     const storedBookmarks = await this.storage.get('bookmarks');
     this.bookmarks = storedBookmarks ? storedBookmarks : [];
     this.filteredBookmarks = [...this.bookmarks];
   }
+
 
   async removeBookmark(event: Event, movieId: number) {
     event.stopPropagation();
@@ -51,10 +54,15 @@ export class BookmarksPage implements OnDestroy {
     this.bookmarkService.notifyChange();
   }
 
-  goToMovieDetail(movieId: number) {
-    this.router.navigate(['/movie-detail', movieId], { queryParams: { returnUrl: '/bookmarks' } });
-  }
 
+  goToMovieDetail(movie: any) {
+    const fromApi = movie.poster_path ? 'true' : 'false';
+    this.router.navigate(['/movie-detail', movie.id], {
+      queryParams: { returnUrl: '/bookmarks', fromApi }
+    });
+  }
+  
+  
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

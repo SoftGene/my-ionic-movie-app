@@ -3,18 +3,67 @@
   import { CommonModule } from '@angular/common';
   import { IonicModule } from '@ionic/angular';
   import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+  import { HttpClient } from '@angular/common/http';
+  import { Storage } from '@ionic/storage-angular';
+
 
   @Component({
     selector: 'app-movie-detail',
     templateUrl: './movie-detail.page.html',
     styleUrls: ['./movie-detail.page.scss'],
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonicModule ],
   })
   export class MovieDetailPage {
     movie: any;
+    loading = true;
+    apiUrl = 'https://api.themoviedb.org/3/movie/upcoming';
+    apiKey = '0801601f852bc183c6d26b5b9ffcda11'; // Вставьте ваш API-ключ
+    returnUrl: string = '/movies'; // По умолчанию возвращает в Movies
 
-    movies = [
+
+    
+     
+  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router, private http: HttpClient,private storage: Storage) {}
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+    
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    const fromApi = this.route.snapshot.queryParamMap.get('fromApi') === 'true';
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/movies';
+  
+    if (id) {
+      if (fromApi) {
+        this.loadMovieFromApi(id);
+      } else {
+        this.loadMovieFromBookmarks(+id);
+      }
+    } else {
+      console.error('Movie ID is missing.');
+      this.loading = false;
+    }
+  }
+
+  async loadMovieFromBookmarks(id: number) {
+    const storedBookmarks: any[] = (await this.storage.get('bookmarks')) || [];
+    this.movie = storedBookmarks.find((m) => m.id === id);
+  
+    if (!this.movie) {
+      console.error('Movie not found in bookmarks.');
+    }
+  
+    this.loading = false;
+  }
+  
+  
+
+  loadMovieFromLocal(id: number) {
+    // Ваш локальный массив фильмов
+    const movies = [
       {
         id: 1,
         title: 'The Shawshank Redemption',
@@ -225,32 +274,72 @@
         stars: 'Mark Hamill, Harrison Ford, Carrie Fisher',
         trailerUrl: 'https://www.youtube.com/embed/JNwNXF9Y6kY?si=SPlhb6qlcBosJAt9',
       },
+      // Добавьте остальные фильмы
     ];
 
-
-  returnUrl: string = '/movies'; // По умолчанию возвращает в Movies
-    
-  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router) {}
-
-  getSafeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.movie = movies.find((m) => m.id === id);
+    this.loading = false;
   }
-    
 
-  ngOnInit() {
-    // Получаем ID фильма из параметров маршрута
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.movie = this.movies.find((m) => m.id === +id);
+loadMovieFromApi(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${this.apiKey}&language=en-US&append_to_response=videos,credits`;
+  this.http.get(url).subscribe(
+    (response: any) => {
+      this.movie = {
+        title: response.title,
+        description: response.overview ? response.overview : 'No description available.',
+        poster: `https://image.tmdb.org/t/p/w500${response.poster_path}`,
+        duration: this.formatRuntime(response.runtime),
+        rating: response.vote_average || 'N/A',
+        director: this.getDirector(response.credits.crew),
+        writers: this.getWriters(response.credits.crew),
+        stars: this.getStars(response.credits.cast),
+        trailerUrl: this.getTrailerUrl(response.videos.results),
+      };
+      this.loading = false;
+    },
+    (error) => {
+      console.error('Error loading movie from API:', error);
+      this.loading = false;
     }
+  );
+}
 
-    // Получаем маршрут возврата из queryParams
-    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/movies';
+
+formatRuntime(runtime: number): string {
+  if (!runtime || runtime <= 0) {
+    return 'N/A';
+  }
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+  return hours > 0 ? `${hours}h ${minutes}min` : `${minutes}min`;
+}
+
+  getDirector(crew: any[]): string {
+    const director = crew.find((member) => member.job === 'Director');
+    return director ? director.name : 'N/A';
+  }
+
+  getWriters(crew: any[]): string {
+    const writers = crew.filter(
+      (member) => member.job === 'Writer' || member.department === 'Writing'
+    );
+    return writers.map((writer) => writer.name).join(', ');
+  }
+
+  getStars(cast: any[]): string {
+    return cast.slice(0, 3).map((actor) => actor.name).join(', ');
+  }
+
+  getTrailerUrl(videos: any[]): string {
+    const trailer = videos.find((video) => video.type === 'Trailer');
+    return trailer
+      ? `https://www.youtube.com/embed/${trailer.key}`
+      : 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Заглушка
   }
 
   goBack() {
-    // Переход по сохранённому маршруту возврата
     this.router.navigate([this.returnUrl]);
-  }
+  }  
 }
  
